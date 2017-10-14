@@ -8,15 +8,33 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
-    public const int DebugMessage = 0;
+    public const int ChessPiece = 0;
+    public const int ChessPieceHolder = 1;
+    public const int ChessPieceSelected = 2;
+    public const int DebugMessage = 3;
+    public const int Position = 4;
+    public const int Sprite = 5;
+    public const int View = 6;
 
-    public const int TotalComponents = 1;
+    public const int TotalComponents = 7;
 
     public static readonly string[] componentNames = {
-        "DebugMessage"
+        "ChessPiece",
+        "ChessPieceHolder",
+        "ChessPieceSelected",
+        "DebugMessage",
+        "Position",
+        "Sprite",
+        "View"
     };
 
     public static readonly System.Type[] componentTypes = {
-        typeof(DebugMessageComponent)
+        typeof(ChessPieceComponent),
+        typeof(ChessPieceHolderComponent),
+        typeof(ChessPieceSelectedComponent),
+        typeof(DebugMessageComponent),
+        typeof(PositionComponent),
+        typeof(SpriteComponent),
+        typeof(ViewComponent)
     };
 }
