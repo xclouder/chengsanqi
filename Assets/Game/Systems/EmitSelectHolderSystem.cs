@@ -34,6 +34,8 @@ public class EmitSelectHolderSystem : ReactiveSystem<InputEntity> {
 			{
 				if (Vector2.Distance(h.position.position, e.mousePosition.position) <= m_holderRadius)
 				{
+					Debug.Log("emit a select chessholder");
+
 					var emitEntity = _inputContext.CreateEntity();
 					emitEntity.AddSelectChessHolder(h);
 				}

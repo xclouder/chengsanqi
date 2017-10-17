@@ -13,7 +13,11 @@ public class GameController : MonoBehaviour {
 		_systems = new Feature("Systems")
 			//.Add(new DebugMessageSystem(contexts))
 			//.Add(new HelloWorldSystem(contexts));
-			.Add(new AddChessHolderSystem(contexts));
+			.Add(new AddChessHolderSystem(contexts))
+			.Add(new EmitInputSystem(contexts))
+			.Add(new EmitSelectHolderSystem(contexts))
+			.Add(new AddChessSystem(contexts));
+		
 		
 
 		_systems.Initialize();
