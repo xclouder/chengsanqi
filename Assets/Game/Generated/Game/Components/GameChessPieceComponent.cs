@@ -8,19 +8,25 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly ChessPieceComponent chessPieceComponent = new ChessPieceComponent();
+    public ChessPieceComponent chessPiece { get { return (ChessPieceComponent)GetComponent(GameComponentsLookup.ChessPiece); } }
+    public bool hasChessPiece { get { return HasComponent(GameComponentsLookup.ChessPiece); } }
 
-    public bool isChessPiece {
-        get { return HasComponent(GameComponentsLookup.ChessPiece); }
-        set {
-            if (value != isChessPiece) {
-                if (value) {
-                    AddComponent(GameComponentsLookup.ChessPiece, chessPieceComponent);
-                } else {
-                    RemoveComponent(GameComponentsLookup.ChessPiece);
-                }
-            }
-        }
+    public void AddChessPiece(bool newIsWhite) {
+        var index = GameComponentsLookup.ChessPiece;
+        var component = CreateComponent<ChessPieceComponent>(index);
+        component.isWhite = newIsWhite;
+        AddComponent(index, component);
+    }
+
+    public void ReplaceChessPiece(bool newIsWhite) {
+        var index = GameComponentsLookup.ChessPiece;
+        var component = CreateComponent<ChessPieceComponent>(index);
+        component.isWhite = newIsWhite;
+        ReplaceComponent(index, component);
+    }
+
+    public void RemoveChessPiece() {
+        RemoveComponent(GameComponentsLookup.ChessPiece);
     }
 }
 

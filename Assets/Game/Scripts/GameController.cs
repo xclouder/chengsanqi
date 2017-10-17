@@ -6,13 +6,14 @@ public class GameController : MonoBehaviour {
 
 	Systems _systems;
 
-	void Start()
+	void Awake()
 	{
 		var contexts = Contexts.sharedInstance;
 
 		_systems = new Feature("Systems")
-			.Add(new DebugMessageSystem(contexts))
-			.Add(new HelloWorldSystem(contexts));
+			//.Add(new DebugMessageSystem(contexts))
+			//.Add(new HelloWorldSystem(contexts));
+			.Add(new AddChessHolderSystem(contexts));
 		
 
 		_systems.Initialize();

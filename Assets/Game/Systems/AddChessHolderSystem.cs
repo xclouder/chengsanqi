@@ -21,7 +21,7 @@ public class AddChessHolderSystem : ReactiveSystem<GameEntity> {
 
 	protected override bool Filter(GameEntity entity)
 	{
-		return !entity.isChessPieceHolder;
+		return entity.isChessPieceHolder;
 	}
 
 	protected override void Execute(List<GameEntity> entities)
@@ -29,6 +29,7 @@ public class AddChessHolderSystem : ReactiveSystem<GameEntity> {
 		foreach (GameEntity e in entities)
 		{
 			GameObject go = new GameObject("Chess Holder View");
+			go.transform.position = e.position.position;
 			go.transform.SetParent(_viewContainer, false);
 			e.AddView(go);
 			go.Link(e, _context);

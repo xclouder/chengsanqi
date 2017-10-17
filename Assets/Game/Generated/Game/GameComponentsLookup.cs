@@ -11,20 +11,22 @@ public static class GameComponentsLookup {
     public const int ChessPiece = 0;
     public const int ChessPieceHolder = 1;
     public const int ChessPieceSelected = 2;
-    public const int DebugMessage = 3;
-    public const int Position = 4;
-    public const int Sprite = 5;
-    public const int View = 6;
+    public const int Coordinate = 3;
+    public const int DebugMessage = 4;
+    public const int ForbiddenLayout = 5;
+    public const int Position = 6;
+    public const int View = 7;
 
-    public const int TotalComponents = 7;
+    public const int TotalComponents = 8;
 
     public static readonly string[] componentNames = {
         "ChessPiece",
         "ChessPieceHolder",
         "ChessPieceSelected",
+        "Coordinate",
         "DebugMessage",
+        "ForbiddenLayout",
         "Position",
-        "Sprite",
         "View"
     };
 
@@ -32,9 +34,10 @@ public static class GameComponentsLookup {
         typeof(ChessPieceComponent),
         typeof(ChessPieceHolderComponent),
         typeof(ChessPieceSelectedComponent),
+        typeof(CoordinateComponent),
         typeof(DebugMessageComponent),
+        typeof(ForbiddenLayoutComponent),
         typeof(PositionComponent),
-        typeof(SpriteComponent),
         typeof(ViewComponent)
     };
 }
