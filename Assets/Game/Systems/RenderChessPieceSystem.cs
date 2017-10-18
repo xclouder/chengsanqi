@@ -1,15 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Entitas;
+using Entitas.Unity;
 
-public class RenderChessPieceSystem : MonoBehaviour {
+public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 
-	// Use this for initialization
-	void Start () {
-	
+	public RenderChessPieceSystem(Contexts contexts) : base(contexts.game)
+	{
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	#region implemented abstract members of ReactiveSystem
+
+	protected override ICollector<GameEntity> GetTrigger (IContext<GameEntity> context)
+	{
+		return context.CreateCollector(GameMatcher.ChessPiece);
 	}
+
+	protected override bool Filter (GameEntity entity)
+	{
+		return entity.hasChessPiece && entity.hasView;
+	}
+
+	protected override void Execute (System.Collections.Generic.List<GameEntity> entities)
+	{
+		foreach (var e in entities)
+		{
+			var go = e.view.gameObject;
+
+
+		}
+	}
+
+	private void RenderChessPiece(ChessPieceComponent c, GameObject o)
+	{
+
+	}
+
+	#endregion
+
+
+
+
 }
