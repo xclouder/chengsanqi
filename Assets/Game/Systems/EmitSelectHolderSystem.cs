@@ -24,7 +24,7 @@ public class EmitSelectHolderSystem : ReactiveSystem<InputEntity> {
 		return entity.hasMouseDown;
 	}
 
-	private float m_holderRadius = 1f;
+	private float m_holderRadius = 0.3f;
 	protected override void Execute (System.Collections.Generic.List<InputEntity> entities)
 	{
 		foreach (var e in entities)

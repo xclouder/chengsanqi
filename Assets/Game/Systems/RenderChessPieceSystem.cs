@@ -26,15 +26,13 @@ public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 	{
 		foreach (var e in entities)
 		{
-			var go = e.view.gameObject;
-
-
+			RenderChessPiece(e);
 		}
 	}
 
-	private void RenderChessPiece(ChessPieceComponent c, GameObject o)
+	private void RenderChessPiece(GameEntity e)
 	{
-
+		e.view.Init(e.chessPiece);
 	}
 
 	#endregion

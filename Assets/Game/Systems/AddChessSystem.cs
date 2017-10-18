@@ -40,6 +40,8 @@ public class AddChessSystem : ReactiveSystem<InputEntity> {
 			go.transform.SetParent(_viewContainer, false);
 			chess.AddView(go);
 			go.Link(chess, _context);
+
+			chess.AddChessPiece(true);
 		}
 	}
 
