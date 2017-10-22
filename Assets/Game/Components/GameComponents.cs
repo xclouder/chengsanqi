@@ -28,6 +28,11 @@ public class ChessPieceHolderComponent : IComponent
 
 }
 
+public class LayChessPieceComponent : IComponent
+{
+	public ChessPieceComponent chessPiece;
+}
+
 public class ChessPieceSelectedComponent : IComponent
 {
 
@@ -69,9 +74,66 @@ public class ViewComponent : IComponent
 
 	public void SetSelected(bool sel)
 	{
-		
+		m_selectedIcon.gameObject.SetActive(sel);
 	}
 }
+
+public enum GameState
+{
+	Prepare,		//未开始
+	DropChess,		//落子
+	WalkChess,		//走棋
+	End				//结束
+}
+
+[Unique]
+public class GameStateComponent : IComponent
+{
+	public GameState gameState;
+}
+
+public enum Turn
+{
+	White,
+	Black
+}
+
+
+public enum GameMode
+{
+	Normal,
+	KillChess,		//摘子
+}
+
+[Unique]
+public class GameModeComponent : IComponent
+{
+	public GameMode gameMode;
+}
+
+
+[Unique]
+public class TurnStateComponent : IComponent
+{
+	public Turn turn;
+}
+
+[Unique]
+public class DropChessStateComponent : IComponent
+{
+	public int round;
+}
+
+public class GameEndStateComponent : IComponent
+{
+	public Turn winner;
+}
+
+public class ResetGameComponent : IComponent
+{
+
+}
+
 
 
 //input
@@ -108,3 +170,4 @@ public class SelectChessHolderComponent : IComponent
 {
 	public GameEntity chessHolder;
 }
+

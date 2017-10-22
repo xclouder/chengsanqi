@@ -5,9 +5,13 @@ using Entitas.Unity;
 
 public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 
+	readonly Transform _viewContainer = new GameObject("Chess Views").transform;
+
+	readonly GameContext _context;
+
 	public RenderChessPieceSystem(Contexts contexts) : base(contexts.game)
 	{
-
+		_context = contexts.game;
 	}
 
 	#region implemented abstract members of ReactiveSystem
@@ -19,7 +23,7 @@ public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 
 	protected override bool Filter (GameEntity entity)
 	{
-		return entity.hasChessPiece && entity.hasView;
+		return entity.hasChessPiece;
 	}
 
 	protected override void Execute (System.Collections.Generic.List<GameEntity> entities)
@@ -32,6 +36,12 @@ public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 
 	private void RenderChessPiece(GameEntity e)
 	{
+		GameObject go = new GameObject("Chess View");
+		go.transform.position = e.position.position;
+		go.transform.SetParent(_viewContainer, false);
+		e.AddView(go);
+		go.Link(e, _context);
+
 		e.view.Init(e.chessPiece);
 	}
 

@@ -12,16 +12,23 @@ public class GameController : MonoBehaviour {
 
 		_systems = new Feature("Systems")
 			//.Add(new DebugMessageSystem(contexts))
-			//.Add(new HelloWorldSystem(contexts));
+//			.Add(new HelloWorldSystem(contexts));
 			.Add(new AddChessHolderSystem(contexts))
 			.Add(new EmitInputSystem(contexts))
 			.Add(new EmitSelectHolderSystem(contexts))
-			.Add(new AddChessSystem(contexts))
-			.Add(new RenderChessPieceSystem(contexts));
-		
+			.Add(new RenderChessPieceSystem(contexts))
+			.Add(new GameLogicSystem(contexts))
+			.Add(new ChessComboSystem(contexts))
+			;
 
 		_systems.Initialize();
 	}
+
+//	void Start()
+//	{
+//		var e = Contexts.sharedInstance.game.CreateEntity();
+//		e.isResetGame = true;
+//	}
 
 	void Update()
 	{
