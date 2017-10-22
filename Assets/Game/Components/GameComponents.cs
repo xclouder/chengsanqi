@@ -31,6 +31,7 @@ public class ChessPieceHolderComponent : IComponent
 public class LayChessPieceComponent : IComponent
 {
 	public ChessPieceComponent chessPiece;
+	public GameEntity chessPieceEntity;
 }
 
 public class ChessPieceSelectedComponent : IComponent

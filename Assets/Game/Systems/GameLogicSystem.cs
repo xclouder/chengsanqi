@@ -19,6 +19,8 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 		_gameContext.GetGroup(GameMatcher.ResetGame).OnEntityAdded += OnResetGame;
 
+		_gameContext.GetGroup(GameMatcher.GameMode).OnEntityUpdated += OnUpdateGameMode;
+
 		InitGame();
 	}
 
@@ -29,6 +31,21 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 		_gameContext.SetGameMode(GameMode.Normal);
 		_gameContext.SetTurnState(Turn.White);
+	}
+
+	private void OnUpdateGameMode(IGroup<GameEntity> grp, GameEntity e, int index, IComponent comp, IComponent newComp)
+	{
+		if (e.gameMode.gameMode == GameMode.Normal)
+		{
+			//update turn
+			RevertTurn();
+		}
+		else
+		{
+			//tip select his chess piece to kill
+			Debug.Log("please select his chess piece to kill");
+
+		}
 	}
 
 	private void OnResetGame(IGroup<GameEntity> grp, GameEntity e, int index, IComponent comp)
@@ -47,8 +64,6 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 	{
 		if (_gameContext.gameMode.gameMode == GameMode.KillChess)
 		{
-			
-
 			return;
 		}
 
@@ -90,16 +105,16 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 				}
 
 				//link holder and chess piece
-				holder.AddLayChessPiece(chess.chessPiece);
+				holder.AddLayChessPiece(chess.chessPiece, chess);
 
 				//revert turn
-				_gameContext.ReplaceTurnState(currTurn == Turn.Black ? Turn.White : Turn.Black);
+				RevertTurn();
 				break;
 			}
 		case GameState.WalkChess:
 			{
 				//revert turn
-				_gameContext.ReplaceTurnState(currTurn == Turn.Black ? Turn.White : Turn.Black);
+				RevertTurn();
 				break;
 			}
 		default:
@@ -141,6 +156,12 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 	protected override void Execute (System.Collections.Generic.List<InputEntity> entities)
 	{
 		
+	}
+
+	void RevertTurn()
+	{
+		var currTurn = _gameContext.turnState.turn;
+		_gameContext.ReplaceTurnState(currTurn == Turn.Black ? Turn.White : Turn.Black);
 	}
 
 

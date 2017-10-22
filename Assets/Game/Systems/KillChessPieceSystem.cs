@@ -24,9 +24,23 @@ public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 
 	protected override void Execute (System.Collections.Generic.List<InputEntity> entities)
 	{
+		var currTurn = m_gameContext.turnState.turn;
 		foreach (var e in entities)
 		{
-			
+			var holder = e.selectChessHolder.chessHolder;
+			if (holder.hasLayChessPiece)
+			{
+				bool isWhite = holder.layChessPiece.chessPiece.isWhite;
+				bool needWhite = currTurn == Turn.White ? false : true;
+				if (isWhite == needWhite)
+				{
+					var coor = holder.layChessPiece.chessPieceEntity.coordinate;
+					Debug.Log(string.Format("destroy chess piece at ({0},{1})", coor.round, coor.pos));
+					holder.layChessPiece.chessPieceEntity.Destroy();
+
+					holder.isForbiddenLayout = true;
+				}
+			}
 		}
 	}
 

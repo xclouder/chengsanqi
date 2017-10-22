@@ -94,9 +94,13 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 		}
 	}
 
+	readonly GameContext m_gameContext;
+
 	public ChessComboSystem(Contexts contexts) : base(contexts.game)
 	{
 		InitBoard();
+
+		m_gameContext = contexts.game;
 	}
 
 	#region implemented abstract members of ReactiveSystem
@@ -126,6 +130,8 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 			if (CheckHasCombo(coor, e.chessPiece.isWhite))
 			{
 				Debug.Log("Combo! isWhite:" + e.chessPiece.isWhite);
+
+				m_gameContext.ReplaceGameMode(GameMode.KillChess);
 			}
 		}
 	}

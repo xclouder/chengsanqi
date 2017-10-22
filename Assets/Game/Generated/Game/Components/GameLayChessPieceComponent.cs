@@ -11,17 +11,19 @@ public partial class GameEntity {
     public LayChessPieceComponent layChessPiece { get { return (LayChessPieceComponent)GetComponent(GameComponentsLookup.LayChessPiece); } }
     public bool hasLayChessPiece { get { return HasComponent(GameComponentsLookup.LayChessPiece); } }
 
-    public void AddLayChessPiece(ChessPieceComponent newChessPiece) {
+    public void AddLayChessPiece(ChessPieceComponent newChessPiece, GameEntity newChessPieceEntity) {
         var index = GameComponentsLookup.LayChessPiece;
         var component = CreateComponent<LayChessPieceComponent>(index);
         component.chessPiece = newChessPiece;
+        component.chessPieceEntity = newChessPieceEntity;
         AddComponent(index, component);
     }
 
-    public void ReplaceLayChessPiece(ChessPieceComponent newChessPiece) {
+    public void ReplaceLayChessPiece(ChessPieceComponent newChessPiece, GameEntity newChessPieceEntity) {
         var index = GameComponentsLookup.LayChessPiece;
         var component = CreateComponent<LayChessPieceComponent>(index);
         component.chessPiece = newChessPiece;
+        component.chessPieceEntity = newChessPieceEntity;
         ReplaceComponent(index, component);
     }
 
