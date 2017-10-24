@@ -84,6 +84,11 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 					return;
 				}
 
+				if (holder.isForbiddenLayout) {
+					Debug.LogError ("this coor is forbidden to lay chess piece");
+					return;
+				}
+
 				var chess = _gameContext.CreateEntity();
 				chess.AddPosition(holder.position.position);
 				chess.AddCoordinate(holder.coordinate.round, holder.coordinate.pos);
@@ -96,6 +101,7 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 					var currRound = _gameContext.dropChessState.round;
 					if (currRound >= MAX_DROP_ROUND)
 					{
+						Debug.LogWarning ("Enter Walk Phase");
 						_gameContext.ReplaceGameState(GameState.WalkChess);
 					}
 					else
@@ -135,7 +141,10 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 	private void OnRemoveChessPiece(IGroup<GameEntity> grp, GameEntity entity, int index, IComponent comp)
 	{
+		//removed a chese piece, update GameMode, Turn
+		_gameContext.ReplaceGameMode(GameMode.Normal);
 
+		RevertTurn();
 	}
 
 	private void OnUpdateChessPiece(IGroup<GameEntity> grp, GameEntity entity, int index, IComponent comp, IComponent newComp)

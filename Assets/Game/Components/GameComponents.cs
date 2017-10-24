@@ -79,6 +79,11 @@ public class ViewComponent : IComponent
 	}
 }
 
+[Game, Input]
+public class DestroyedComponent : IComponent 
+{
+}
+
 public enum GameState
 {
 	Prepare,		//未开始

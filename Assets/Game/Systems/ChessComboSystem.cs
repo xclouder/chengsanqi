@@ -101,6 +101,23 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 		InitBoard();
 
 		m_gameContext = contexts.game;
+
+		var grp = m_gameContext.GetGroup (GameMatcher.ChessPiece);
+		grp.OnEntityRemoved += (group, entity, index, component) => {
+
+			var c = entity.coordinate;
+			var coor = new Int2(c.round, c.pos);
+
+			if (m_chessPieceDict.ContainsKey(coor))
+			{
+				m_chessPieceDict.Remove(coor);
+			}
+			else
+			{
+				Debug.LogError("no this coor");
+			}
+
+		};
 	}
 
 	#region implemented abstract members of ReactiveSystem
@@ -117,6 +134,8 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 	{
 		return entity.hasChessPiece;
 	}
+
+
 
 	protected override void Execute (System.Collections.Generic.List<GameEntity> entities)
 	{

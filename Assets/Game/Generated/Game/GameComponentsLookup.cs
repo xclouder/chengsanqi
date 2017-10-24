@@ -13,18 +13,19 @@ public static class GameComponentsLookup {
     public const int ChessPieceSelected = 2;
     public const int Coordinate = 3;
     public const int DebugMessage = 4;
-    public const int DropChessState = 5;
-    public const int ForbiddenLayout = 6;
-    public const int GameEndState = 7;
-    public const int GameMode = 8;
-    public const int GameState = 9;
-    public const int LayChessPiece = 10;
-    public const int Position = 11;
-    public const int ResetGame = 12;
-    public const int TurnState = 13;
-    public const int View = 14;
+    public const int Destroyed = 5;
+    public const int DropChessState = 6;
+    public const int ForbiddenLayout = 7;
+    public const int GameEndState = 8;
+    public const int GameMode = 9;
+    public const int GameState = 10;
+    public const int LayChessPiece = 11;
+    public const int Position = 12;
+    public const int ResetGame = 13;
+    public const int TurnState = 14;
+    public const int View = 15;
 
-    public const int TotalComponents = 15;
+    public const int TotalComponents = 16;
 
     public static readonly string[] componentNames = {
         "ChessPiece",
@@ -32,6 +33,7 @@ public static class GameComponentsLookup {
         "ChessPieceSelected",
         "Coordinate",
         "DebugMessage",
+        "Destroyed",
         "DropChessState",
         "ForbiddenLayout",
         "GameEndState",
@@ -50,6 +52,7 @@ public static class GameComponentsLookup {
         typeof(ChessPieceSelectedComponent),
         typeof(CoordinateComponent),
         typeof(DebugMessageComponent),
+        typeof(DestroyedComponent),
         typeof(DropChessStateComponent),
         typeof(ForbiddenLayoutComponent),
         typeof(GameEndStateComponent),

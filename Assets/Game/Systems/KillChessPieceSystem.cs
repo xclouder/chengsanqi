@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Entitas;
+using Entitas.Unity;
 
 public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 
@@ -32,13 +33,20 @@ public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 			{
 				bool isWhite = holder.layChessPiece.chessPiece.isWhite;
 				bool needWhite = currTurn == Turn.White ? false : true;
-				if (isWhite == needWhite)
+				if (isWhite != needWhite)
 				{
 					var coor = holder.layChessPiece.chessPieceEntity.coordinate;
-					Debug.Log(string.Format("destroy chess piece at ({0},{1})", coor.round, coor.pos));
-					holder.layChessPiece.chessPieceEntity.Destroy();
-
+					Debug.Log(string.Format("trigger destroy chess piece at ({0},{1})", coor.round, coor.pos));
+					var piece = holder.layChessPiece.chessPieceEntity;
+					holder.RemoveLayChessPiece ();
 					holder.isForbiddenLayout = true;
+
+					var o = piece.view.gameObject;
+					o.Unlink ();
+					Object.Destroy (o);
+
+					piece.Destroy();
+
 				}
 			}
 		}

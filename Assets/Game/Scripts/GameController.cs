@@ -18,8 +18,9 @@ public class GameController : MonoBehaviour {
 			.Add(new EmitSelectHolderSystem(contexts))
 			.Add(new RenderChessPieceSystem(contexts))
 			.Add(new GameLogicSystem(contexts))
-			.Add(new ChessComboSystem(contexts))
 			.Add(new KillChessPieceSystem(contexts))
+			.Add(new ChessComboSystem(contexts))
+			.Add(new DestroySystem(contexts))
 			;
 
 		_systems.Initialize();
