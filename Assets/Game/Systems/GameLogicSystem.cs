@@ -27,7 +27,7 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 	private void InitGame()
 	{
 		_gameContext.SetGameState(GameState.DropChess);
-		_gameContext.SetDropChessState(0);
+		_gameContext.SetDropChessState(1);
 
 		_gameContext.SetGameMode(GameMode.Normal);
 		_gameContext.SetTurnState(Turn.White);
