@@ -39,6 +39,12 @@ public class ChessPieceSelectedComponent : IComponent
 
 }
 
+[Unique]
+public class PreviousActionChessPieceComponent : IComponent
+{
+	public GameEntity chessPieceEntity;
+}
+
 public class ViewComponent : IComponent
 {
 	public GameObject gameObject;
@@ -104,24 +110,24 @@ public enum Turn
 	Black
 }
 
-
-public enum GameMode
-{
-	Normal,
-	KillChess,		//摘子
-}
-
-[Unique]
-public class GameModeComponent : IComponent
-{
-	public GameMode gameMode;
-}
-
-
 [Unique]
 public class TurnStateComponent : IComponent
 {
 	public Turn turn;
+}
+
+public enum ActionState
+{
+	Start,
+	WaitCheckCombo,
+	KillChess,
+	End
+}
+
+[Unique]
+public class ActionStateComponent : IComponent
+{
+	public ActionState actionState;
 }
 
 [Unique]

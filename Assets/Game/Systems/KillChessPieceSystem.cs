@@ -20,7 +20,7 @@ public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 
 	protected override bool Filter (InputEntity entity)
 	{
-		return entity.hasSelectChessHolder && m_gameContext.gameMode.gameMode == GameMode.KillChess;
+		return entity.hasSelectChessHolder && m_gameContext.actionState.actionState == ActionState.KillChess;
 	}
 
 	protected override void Execute (System.Collections.Generic.List<InputEntity> entities)
@@ -31,9 +31,14 @@ public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 			var holder = e.selectChessHolder.chessHolder;
 			if (holder.hasLayChessPiece)
 			{
+				if (holder.layChessPiece.chessPieceEntity == m_gameContext.previousActionChessPiece.chessPieceEntity)
+				{
+					continue;
+				}
+
 				bool isWhite = holder.layChessPiece.chessPiece.isWhite;
 				bool needWhite = currTurn == Turn.White ? false : true;
-				if (isWhite != needWhite)
+				if (isWhite == needWhite)
 				{
 					var coor = holder.layChessPiece.chessPieceEntity.coordinate;
 					Debug.Log(string.Format("trigger destroy chess piece at ({0},{1})", coor.round, coor.pos));
@@ -46,6 +51,9 @@ public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 					Object.Destroy (o);
 
 					piece.Destroy();
+
+
+					m_gameContext.ReplaceActionState(ActionState.End);
 
 				}
 			}

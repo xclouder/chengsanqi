@@ -118,6 +118,48 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 			}
 
 		};
+
+		grp.OnEntityAdded += (group, e, index, component) => {
+
+			Debug.Log(string.Format("add chess piece to dict, pos:({0},{1}), isWhite:{2}", e.coordinate.round, e.coordinate.pos, e.chessPiece.isWhite));
+
+			var coor = new Int2(e.coordinate.round, e.coordinate.pos);
+			m_chessPieceDict.Add(coor, e.chessPiece);
+
+		};
+
+		var actStateGrp = m_gameContext.GetGroup(GameMatcher.ActionState);
+		actStateGrp.OnEntityUpdated += (group, entity, index, previousComponent, newComponent) => {
+
+			if (m_gameContext.actionState.actionState != ActionState.WaitCheckCombo)
+			{
+				return;
+			}
+
+			if (!m_gameContext.hasPreviousActionChessPiece)
+			{
+				Debug.LogError("previousActionChessPiece is null");
+				return;
+			}
+
+			var chessEntity = m_gameContext.previousActionChessPiece.chessPieceEntity;
+			var chess = chessEntity.chessPiece;
+			var coor = new Int2(chessEntity.coordinate.round, chessEntity.coordinate.pos);
+			if (CheckHasCombo(coor, chess.isWhite))
+			{
+				Debug.Log("Combo! isWhite:" + chess.isWhite);
+
+				m_gameContext.ReplaceActionState(ActionState.KillChess);
+
+			}
+			else
+			{
+				m_gameContext.ReplaceActionState(ActionState.End);
+			}
+
+		};
+
+
 	}
 
 	#region implemented abstract members of ReactiveSystem
@@ -139,20 +181,14 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 
 	protected override void Execute (System.Collections.Generic.List<GameEntity> entities)
 	{
-		foreach (var e in entities)
-		{
-			Debug.Log(string.Format("add chess piece to dict, pos:({0},{1}), isWhite:{2}", e.coordinate.round, e.coordinate.pos, e.chessPiece.isWhite));
-
-			var coor = new Int2(e.coordinate.round, e.coordinate.pos);
-			m_chessPieceDict.Add(coor, e.chessPiece);
-
-			if (CheckHasCombo(coor, e.chessPiece.isWhite))
-			{
-				Debug.Log("Combo! isWhite:" + e.chessPiece.isWhite);
-
-				m_gameContext.ReplaceGameMode(GameMode.KillChess);
-			}
-		}
+//		foreach (var e in entities)
+//		{
+//			Debug.Log(string.Format("add chess piece to dict, pos:({0},{1}), isWhite:{2}", e.coordinate.round, e.coordinate.pos, e.chessPiece.isWhite));
+//
+//			var coor = new Int2(e.coordinate.round, e.coordinate.pos);
+//			m_chessPieceDict.Add(coor, e.chessPiece);
+//
+//		}
 	}
 
 	bool CheckHasCombo(Int2 coor, bool isWhite)

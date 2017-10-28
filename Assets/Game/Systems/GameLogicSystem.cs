@@ -19,7 +19,7 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 		_gameContext.GetGroup(GameMatcher.ResetGame).OnEntityAdded += OnResetGame;
 
-		_gameContext.GetGroup(GameMatcher.GameMode).OnEntityUpdated += OnUpdateGameMode;
+		_gameContext.GetGroup(GameMatcher.ActionState).OnEntityUpdated += OnUpdateActionState;
 
 		InitGame();
 	}
@@ -29,22 +29,53 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 		_gameContext.SetGameState(GameState.DropChess);
 		_gameContext.SetDropChessState(1);
 
-		_gameContext.SetGameMode(GameMode.Normal);
+		_gameContext.SetActionState(ActionState.Start);
 		_gameContext.SetTurnState(Turn.White);
+		_gameContext.SetPreviousActionChessPiece(null);
 	}
 
-	private void OnUpdateGameMode(IGroup<GameEntity> grp, GameEntity e, int index, IComponent comp, IComponent newComp)
+	private void OnUpdateActionState(IGroup<GameEntity> grp, GameEntity e, int index, IComponent comp, IComponent newComp)
 	{
-		if (e.gameMode.gameMode == GameMode.Normal)
+		Debug.Log("ActionState chagne to:" + e.actionState.actionState);
+		if (e.actionState.actionState == ActionState.End)
 		{
-			//update turn
-			RevertTurn();
+			if (_gameContext.turnState.turn == Turn.Black)
+			{
+				var r = _gameContext.dropChessState.round;
+				if (r >= MAX_DROP_ROUND)
+				{
+					Debug.LogWarning ("Enter Walk Phase");
+					_gameContext.ReplaceGameState(GameState.WalkChess);
+				}
+				else
+				{
+					_gameContext.ReplaceDropChessState(r + 1);
+				}
+			}
+
+			bool isGameFinished = false;
+			if (isGameFinished)
+			{
+
+			}
+			else
+			{
+				//update turn
+				RevertTurn();
+
+				_gameContext.ReplaceActionState(ActionState.Start);
+			}
+
+
 		}
-		else
+		else if (e.actionState.actionState == ActionState.KillChess)
 		{
 			//tip select his chess piece to kill
 			Debug.Log("please select his chess piece to kill");
-
+		}
+		else if (e.actionState.actionState == ActionState.WaitCheckCombo)
+		{
+			
 		}
 	}
 
@@ -55,14 +86,15 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 		_gameContext.ReplaceGameState(GameState.DropChess);
 		_gameContext.ReplaceDropChessState(0);
 
-		_gameContext.ReplaceGameMode(GameMode.Normal);
+		_gameContext.ReplaceActionState(ActionState.Start);
 		_gameContext.ReplaceTurnState(Turn.White);
+//		_gameContext
 
 	}
 
 	private void OnSelectChessPieceHolder(IGroup<InputEntity> grp, InputEntity e, int index, IComponent comp)
 	{
-		if (_gameContext.gameMode.gameMode == GameMode.KillChess)
+		if (_gameContext.actionState.actionState != ActionState.Start)
 		{
 			return;
 		}
@@ -96,25 +128,13 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 				bool isWhite = currTurn == Turn.White;
 				chess.AddChessPiece(isWhite);
 
-				if (!isWhite)
-				{
-					var currRound = _gameContext.dropChessState.round;
-					if (currRound >= MAX_DROP_ROUND)
-					{
-						Debug.LogWarning ("Enter Walk Phase");
-						_gameContext.ReplaceGameState(GameState.WalkChess);
-					}
-					else
-					{
-						_gameContext.ReplaceDropChessState(_gameContext.dropChessState.round + 1);
-					}
-				}
-
 				//link holder and chess piece
 				holder.AddLayChessPiece(chess.chessPiece, chess);
 
-				//revert turn
-				RevertTurn();
+				Debug.Log("set previous chess:" + chess.coordinate);
+				_gameContext.ReplacePreviousActionChessPiece(chess);
+				_gameContext.ReplaceActionState(ActionState.WaitCheckCombo);
+
 				break;
 			}
 		case GameState.WalkChess:
@@ -142,9 +162,9 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 	private void OnRemoveChessPiece(IGroup<GameEntity> grp, GameEntity entity, int index, IComponent comp)
 	{
 		//removed a chese piece, update GameMode, Turn
-		_gameContext.ReplaceGameMode(GameMode.Normal);
-
-		RevertTurn();
+//		_gameContext.ReplaceGameMode(GameMode.Normal);
+//
+//		RevertTurn();
 	}
 
 	private void OnUpdateChessPiece(IGroup<GameEntity> grp, GameEntity entity, int index, IComponent comp, IComponent newComp)

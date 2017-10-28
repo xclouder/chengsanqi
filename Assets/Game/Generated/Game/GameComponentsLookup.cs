@@ -8,26 +8,28 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
-    public const int ChessPiece = 0;
-    public const int ChessPieceHolder = 1;
-    public const int ChessPieceSelected = 2;
-    public const int Coordinate = 3;
-    public const int DebugMessage = 4;
-    public const int Destroyed = 5;
-    public const int DropChessState = 6;
-    public const int ForbiddenLayout = 7;
-    public const int GameEndState = 8;
-    public const int GameMode = 9;
+    public const int ActionState = 0;
+    public const int ChessPiece = 1;
+    public const int ChessPieceHolder = 2;
+    public const int ChessPieceSelected = 3;
+    public const int Coordinate = 4;
+    public const int DebugMessage = 5;
+    public const int Destroyed = 6;
+    public const int DropChessState = 7;
+    public const int ForbiddenLayout = 8;
+    public const int GameEndState = 9;
     public const int GameState = 10;
     public const int LayChessPiece = 11;
     public const int Position = 12;
-    public const int ResetGame = 13;
-    public const int TurnState = 14;
-    public const int View = 15;
+    public const int PreviousActionChessPiece = 13;
+    public const int ResetGame = 14;
+    public const int TurnState = 15;
+    public const int View = 16;
 
-    public const int TotalComponents = 16;
+    public const int TotalComponents = 17;
 
     public static readonly string[] componentNames = {
+        "ActionState",
         "ChessPiece",
         "ChessPieceHolder",
         "ChessPieceSelected",
@@ -37,16 +39,17 @@ public static class GameComponentsLookup {
         "DropChessState",
         "ForbiddenLayout",
         "GameEndState",
-        "GameMode",
         "GameState",
         "LayChessPiece",
         "Position",
+        "PreviousActionChessPiece",
         "ResetGame",
         "TurnState",
         "View"
     };
 
     public static readonly System.Type[] componentTypes = {
+        typeof(ActionStateComponent),
         typeof(ChessPieceComponent),
         typeof(ChessPieceHolderComponent),
         typeof(ChessPieceSelectedComponent),
@@ -56,10 +59,10 @@ public static class GameComponentsLookup {
         typeof(DropChessStateComponent),
         typeof(ForbiddenLayoutComponent),
         typeof(GameEndStateComponent),
-        typeof(GameModeComponent),
         typeof(GameStateComponent),
         typeof(LayChessPieceComponent),
         typeof(PositionComponent),
+        typeof(PreviousActionChessPieceComponent),
         typeof(ResetGameComponent),
         typeof(TurnStateComponent),
         typeof(ViewComponent)
