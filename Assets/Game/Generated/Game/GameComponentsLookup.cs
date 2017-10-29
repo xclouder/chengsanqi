@@ -12,27 +12,29 @@ public static class GameComponentsLookup {
     public const int ChessPiece = 1;
     public const int ChessPieceHolder = 2;
     public const int ChessPieceSelected = 3;
-    public const int Coordinate = 4;
-    public const int DebugMessage = 5;
-    public const int Destroyed = 6;
-    public const int DropChessState = 7;
-    public const int ForbiddenLayout = 8;
-    public const int GameEndState = 9;
-    public const int GameState = 10;
-    public const int LayChessPiece = 11;
-    public const int Position = 12;
-    public const int PreviousActionChessPiece = 13;
-    public const int ResetGame = 14;
-    public const int TurnState = 15;
-    public const int View = 16;
+    public const int ComboChecker = 4;
+    public const int Coordinate = 5;
+    public const int DebugMessage = 6;
+    public const int Destroyed = 7;
+    public const int DropChessState = 8;
+    public const int ForbiddenLayout = 9;
+    public const int GameEndState = 10;
+    public const int GameState = 11;
+    public const int LayChessPiece = 12;
+    public const int Position = 13;
+    public const int PreviousActionChessPiece = 14;
+    public const int ResetGame = 15;
+    public const int TurnState = 16;
+    public const int View = 17;
 
-    public const int TotalComponents = 17;
+    public const int TotalComponents = 18;
 
     public static readonly string[] componentNames = {
         "ActionState",
         "ChessPiece",
         "ChessPieceHolder",
         "ChessPieceSelected",
+        "ComboChecker",
         "Coordinate",
         "DebugMessage",
         "Destroyed",
@@ -53,6 +55,7 @@ public static class GameComponentsLookup {
         typeof(ChessPieceComponent),
         typeof(ChessPieceHolderComponent),
         typeof(ChessPieceSelectedComponent),
+        typeof(ComboCheckerComponent),
         typeof(CoordinateComponent),
         typeof(DebugMessageComponent),
         typeof(DestroyedComponent),

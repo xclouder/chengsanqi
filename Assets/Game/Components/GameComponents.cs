@@ -136,6 +136,12 @@ public class DropChessStateComponent : IComponent
 	public int round;
 }
 
+[Unique]
+public class ComboCheckerComponent : IComponent
+{
+	public IComboChecker comboChecker;
+}
+
 public class GameEndStateComponent : IComponent
 {
 	public Turn winner;
@@ -145,8 +151,6 @@ public class ResetGameComponent : IComponent
 {
 
 }
-
-
 
 //input
 [Input, Unique]

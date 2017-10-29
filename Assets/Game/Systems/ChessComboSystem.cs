@@ -3,35 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using Entitas;
  
-public class ChessComboSystem : ReactiveSystem<GameEntity> {
-
-	public class Int2
+public class Int2
+{
+	public Int2(int round, int pos)
 	{
-		public Int2(int round, int pos)
-		{
-			this.round = round;
-			this.pos = pos;
-		}
-
-		public int round;
-		public int pos;
-
-		public override int GetHashCode ()
-		{
-			return round.GetHashCode () + pos.GetHashCode();
-		}
-
-		public override bool Equals (object obj)
-		{
-			if (obj is Int2)
-			{
-				var o = obj as Int2;
-				return o.round == round && o.pos == pos;
-			}
-
-			return false;
-		}
+		this.round = round;
+		this.pos = pos;
 	}
+
+	public int round;
+	public int pos;
+
+	public override int GetHashCode ()
+	{
+		return round.GetHashCode () + pos.GetHashCode();
+	}
+
+	public override bool Equals (object obj)
+	{
+		if (obj is Int2)
+		{
+			var o = obj as Int2;
+			return o.round == round && o.pos == pos;
+		}
+
+		return false;
+	}
+}
+
+public interface IComboChecker
+{
+	bool CheckHasCombo(Int2 coor, bool isWhite);
+}
+
+public class ChessComboSystem : ReactiveSystem<GameEntity>, IComboChecker {
 
 	private List<Int2[]> m_sideList = new List<Int2[]>(20);
 	private void AddSide(Int2 one, Int2 two, Int2 three)
@@ -101,6 +106,11 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 		InitBoard();
 
 		m_gameContext = contexts.game;
+
+		if (!m_gameContext.hasComboChecker)
+		{
+			m_gameContext.SetComboChecker(this);
+		}
 
 		var grp = m_gameContext.GetGroup (GameMatcher.ChessPiece);
 		grp.OnEntityRemoved += (group, entity, index, component) => {
@@ -191,7 +201,7 @@ public class ChessComboSystem : ReactiveSystem<GameEntity> {
 //		}
 	}
 
-	bool CheckHasCombo(Int2 coor, bool isWhite)
+	public bool CheckHasCombo(Int2 coor, bool isWhite)
 	{
 		bool needWhite = isWhite;
 		List<Int2[]> _list;
