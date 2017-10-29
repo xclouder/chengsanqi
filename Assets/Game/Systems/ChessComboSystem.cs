@@ -140,6 +140,29 @@ public class ChessComboSystem : ReactiveSystem<GameEntity>, IComboChecker {
 
 		};
 
+		var coorGrp = m_gameContext.GetGroup(GameMatcher.Coordinate);
+		coorGrp.OnEntityUpdated += (group, entity, index, previousComponent, newComponent) => {
+
+			if (entity.hasChessPiece)
+			{
+				var originCoorComp = (CoordinateComponent)previousComponent;
+				var newCoorComp = (CoordinateComponent)newComponent;
+
+				var originCoor = new Int2(originCoorComp.round, originCoorComp.pos);
+				var newCoor = new Int2(newCoorComp.round, newCoorComp.pos);
+				if (m_chessPieceDict.ContainsKey(originCoor))
+				{
+					m_chessPieceDict.Remove(originCoor);
+					m_chessPieceDict.Add(newCoor, entity.chessPiece);
+				}
+				else
+				{
+					Debug.LogError("no this coor");
+				}
+			}
+
+		};
+
 		var actStateGrp = m_gameContext.GetGroup(GameMatcher.ActionState);
 		actStateGrp.OnEntityUpdated += (group, entity, index, previousComponent, newComponent) => {
 

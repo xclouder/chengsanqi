@@ -5,7 +5,7 @@ using Entitas;
 public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 	private GameContext _gameContext;
-	private const int MAX_DROP_ROUND = 9;
+	private const int MAX_DROP_ROUND = 5;
 	private IGroup<GameEntity> m_holderGroup;
 
 	public GameLogicSystem(Contexts contexts) : base(contexts.input)
@@ -192,6 +192,8 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 									break;
 								}
 							}
+
+							_gameContext.ReplacePreviousActionChessPiece(selectedChess);
 
 							//add to new holder
 							selectedChess.ReplaceCoordinate(toCoor.round, toCoor.pos);
