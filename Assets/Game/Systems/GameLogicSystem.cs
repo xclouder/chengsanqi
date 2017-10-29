@@ -6,12 +6,15 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 	private GameContext _gameContext;
 	private const int MAX_DROP_ROUND = 9;
+	private IGroup<GameEntity> m_holderGroup;
 
 	public GameLogicSystem(Contexts contexts) : base(contexts.input)
 	{
 		_gameContext = contexts.game;
 
 		contexts.input.GetGroup(InputMatcher.SelectChessHolder).OnEntityAdded += OnSelectChessPieceHolder;
+
+		m_holderGroup = _gameContext.GetGroup(GameMatcher.ChessPieceHolder);
 
 		_gameContext.GetGroup(GameMatcher.ChessPiece).OnEntityAdded += OnAddChessPiece;
 		_gameContext.GetGroup(GameMatcher.ChessPiece).OnEntityRemoved += OnRemoveChessPiece;
@@ -42,7 +45,7 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 			if (_gameContext.turnState.turn == Turn.Black)
 			{
 				var r = _gameContext.dropChessState.round;
-				if (r >= MAX_DROP_ROUND)
+				if (_gameContext.gameState.gameState == GameState.DropChess && r >= MAX_DROP_ROUND)
 				{
 					Debug.LogWarning ("Enter Walk Phase");
 					_gameContext.ReplaceGameState(GameState.WalkChess);
@@ -53,10 +56,10 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 				}
 			}
 
-			bool isGameFinished = false;
-			if (isGameFinished)
-			{
 
+			if (IsGameFinished())
+			{
+				Debug.LogError("Game Over, Winner:" + _gameContext.turnState.turn);
 			}
 			else
 			{
@@ -99,7 +102,7 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 			return;
 		}
 
-		Debug.Log("select chess piece holder");
+		Debug.LogFormat("select chess piece holder ({0}, {1})", e.selectChessHolder.chessHolder.coordinate.round, e.selectChessHolder.chessHolder.coordinate.pos);
 
 		var currGameState = _gameContext.gameState.gameState;
 		var currTurn = _gameContext.turnState.turn;
@@ -139,8 +142,83 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 			}
 		case GameState.WalkChess:
 			{
-				//revert turn
-				RevertTurn();
+				var chessHolder = e.selectChessHolder.chessHolder;
+
+				if (!_gameContext.hasWalkSelectedChessPiece)
+				{
+					//select a chess piece for current turn
+					if (chessHolder.hasLayChessPiece)
+					{
+						var isWhite = (currTurn == Turn.White);
+						if (chessHolder.layChessPiece.chessPiece.isWhite == isWhite)
+						{
+							chessHolder.layChessPiece.chessPieceEntity.isChessPieceSelected = true;
+							//select it
+							_gameContext.SetWalkSelectedChessPiece(chessHolder.layChessPiece.chessPieceEntity);
+
+							Debug.LogFormat("select chess at:({0},{1})", chessHolder.coordinate.round, chessHolder.coordinate.pos);
+						}
+						else
+						{
+							//not yours
+						}
+					}
+				}
+				else
+				{
+					//walk to
+					if (chessHolder.hasLayChessPiece)
+					{
+						//TODO allow reselect
+						return;
+					}
+					else
+					{
+						var selectedChess = _gameContext.walkSelectedChessPiece.chessPieceEntity;
+						var checker = _gameContext.comboChecker.comboChecker;
+
+						var fromCoor = new Int2(selectedChess.coordinate.round, selectedChess.coordinate.pos);
+						var toCoor = new Int2(chessHolder.coordinate.round, chessHolder.coordinate.pos);
+						if (checker.CanWalkTo(fromCoor, toCoor))
+						{
+							Debug.LogFormat("Walk to ({0}, {1})", toCoor.round, toCoor.pos);
+							//remove from origin holder
+							foreach (var holder in m_holderGroup.GetEntities())
+							{
+								if (holder.hasLayChessPiece && holder.layChessPiece.chessPieceEntity == selectedChess)
+								{
+									holder.RemoveLayChessPiece();
+
+									break;
+								}
+							}
+
+							//add to new holder
+							selectedChess.ReplaceCoordinate(toCoor.round, toCoor.pos);
+							selectedChess.ReplacePosition(chessHolder.position.position);
+							chessHolder.AddLayChessPiece(selectedChess.chessPiece, selectedChess);
+
+							//_gameContext.SetPreviousActionChessPiece(selectedChess);
+							if (checker.CheckHasCombo(toCoor, currTurn == Turn.White))
+							{
+								_gameContext.ReplaceActionState(ActionState.KillChess);	
+							}
+							else
+							{
+								_gameContext.ReplaceActionState(ActionState.End);
+							}
+
+							_gameContext.RemoveWalkSelectedChessPiece();
+
+						}
+						else
+						{
+							Debug.LogError("cannot walk to that coordinate");
+						}
+					}
+				}
+
+
 				break;
 			}
 		default:
@@ -191,6 +269,32 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 	{
 		var currTurn = _gameContext.turnState.turn;
 		_gameContext.ReplaceTurnState(currTurn == Turn.Black ? Turn.White : Turn.Black);
+	}
+
+	bool IsGameFinished()
+	{
+		bool isWalkState = _gameContext.gameState.gameState == GameState.WalkChess;
+
+		if (isWalkState)
+		{
+			var turn = _gameContext.turnState.turn;
+			bool isWhiteTurn = (turn == Turn.White);
+
+			var num = _gameContext.comboChecker.comboChecker.NumOfChess(isWhiteTurn ? false : true);
+
+			if (num <= 2)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 

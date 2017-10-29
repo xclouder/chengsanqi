@@ -34,6 +34,8 @@ public class Int2
 public interface IComboChecker
 {
 	bool CheckHasCombo(Int2 coor, bool isWhite);
+	bool CanWalkTo(Int2 coor1, Int2 coor2);
+	int NumOfChess(bool isWhite);
 }
 
 public class ChessComboSystem : ReactiveSystem<GameEntity>, IComboChecker {
@@ -199,6 +201,24 @@ public class ChessComboSystem : ReactiveSystem<GameEntity>, IComboChecker {
 //			m_chessPieceDict.Add(coor, e.chessPiece);
 //
 //		}
+	}
+
+	public bool CanWalkTo(Int2 coor1, Int2 coor2)
+	{
+		return true;
+	}
+
+	public int NumOfChess(bool isWhite)
+	{
+		int c = 0;
+		foreach (var p in m_chessPieceDict)
+		{
+			if (p.Value.isWhite == isWhite)
+			{
+				c++;
+			}
+		}
+		return c;
 	}
 
 	public bool CheckHasCombo(Int2 coor, bool isWhite)

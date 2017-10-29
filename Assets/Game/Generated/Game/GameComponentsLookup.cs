@@ -26,8 +26,9 @@ public static class GameComponentsLookup {
     public const int ResetGame = 15;
     public const int TurnState = 16;
     public const int View = 17;
+    public const int WalkSelectedChessPiece = 18;
 
-    public const int TotalComponents = 18;
+    public const int TotalComponents = 19;
 
     public static readonly string[] componentNames = {
         "ActionState",
@@ -47,7 +48,8 @@ public static class GameComponentsLookup {
         "PreviousActionChessPiece",
         "ResetGame",
         "TurnState",
-        "View"
+        "View",
+        "WalkSelectedChessPiece"
     };
 
     public static readonly System.Type[] componentTypes = {
@@ -68,6 +70,7 @@ public static class GameComponentsLookup {
         typeof(PreviousActionChessPieceComponent),
         typeof(ResetGameComponent),
         typeof(TurnStateComponent),
-        typeof(ViewComponent)
+        typeof(ViewComponent),
+        typeof(WalkSelectedChessPieceComponent)
     };
 }

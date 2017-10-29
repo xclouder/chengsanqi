@@ -12,6 +12,15 @@ public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 	public RenderChessPieceSystem(Contexts contexts) : base(contexts.game)
 	{
 		_context = contexts.game;
+
+		_context.GetGroup(GameMatcher.Position).OnEntityUpdated += (group, entity, index, previousComponent, newComponent) => {
+
+			if (entity.hasChessPiece)
+			{
+				UpdateChessPiece(entity);
+			}
+
+		};
 	}
 
 	#region implemented abstract members of ReactiveSystem
@@ -43,6 +52,11 @@ public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 		go.Link(e, _context);
 
 		e.view.Init(e.chessPiece);
+	}
+
+	private void UpdateChessPiece(GameEntity e)
+	{
+		e.view.gameObject.transform.position = e.position.position;
 	}
 
 	#endregion

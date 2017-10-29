@@ -34,9 +34,16 @@ public class LayChessPieceComponent : IComponent
 	public GameEntity chessPieceEntity;
 }
 
+
 public class ChessPieceSelectedComponent : IComponent
 {
 
+}
+
+[Unique]
+public class WalkSelectedChessPieceComponent : IComponent
+{
+	public GameEntity chessPieceEntity;
 }
 
 [Unique]
