@@ -10,6 +10,7 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 
 	public GameLogicSystem(Contexts contexts) : base(contexts.input)
 	{
+
 		_gameContext = contexts.game;
 
 		contexts.input.GetGroup(InputMatcher.SelectChessHolder).OnEntityAdded += OnSelectChessPieceHolder;
@@ -199,6 +200,8 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 							selectedChess.ReplaceCoordinate(toCoor.round, toCoor.pos);
 							selectedChess.ReplacePosition(chessHolder.position.position);
 							chessHolder.AddLayChessPiece(selectedChess.chessPiece, selectedChess);
+
+							selectedChess.isChessPieceSelected = false;
 
 							//_gameContext.SetPreviousActionChessPiece(selectedChess);
 							if (checker.CheckHasCombo(toCoor, currTurn == Turn.White))

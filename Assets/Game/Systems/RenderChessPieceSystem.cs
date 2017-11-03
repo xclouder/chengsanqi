@@ -21,6 +21,18 @@ public class RenderChessPieceSystem : ReactiveSystem<GameEntity> {
 			}
 
 		};
+
+		_context.GetGroup(GameMatcher.ChessPieceSelected).OnEntityAdded += (group, entity, index, component) => {
+
+			entity.view.SetSelected(true);
+
+		};
+
+		_context.GetGroup(GameMatcher.ChessPieceSelected).OnEntityRemoved += (group, entity, index, component) => {
+
+			entity.view.SetSelected(false);
+
+		};
 	}
 
 	#region implemented abstract members of ReactiveSystem

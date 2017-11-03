@@ -74,6 +74,9 @@ public class ViewComponent : IComponent
 		selObj.transform.localPosition = Vector3.zero;
 
 		m_icon.sprite = (Sprite)Resources.Load("Images/chess", typeof(Sprite));
+		m_icon.sortingOrder = 1;
+
+		m_selectedIcon.sprite = (Sprite)Resources.Load("Images/selected", typeof(Sprite));
 		if (comp.isWhite)
 		{
 			m_icon.color = Color.white;
