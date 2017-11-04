@@ -52,6 +52,7 @@ public class PreviousActionChessPieceComponent : IComponent
 	public GameEntity chessPieceEntity;
 }
 
+//for chesspiece
 public class ViewComponent : IComponent
 {
 	public GameObject gameObject;
@@ -92,6 +93,34 @@ public class ViewComponent : IComponent
 	public void SetSelected(bool sel)
 	{
 		m_selectedIcon.gameObject.SetActive(sel);
+	}
+}
+
+public class ChessPieceHolderViewComponent : IComponent
+{
+	public GameObject gameObject;
+
+	private SpriteRenderer m_icon;
+
+	public void Init()
+	{
+		var parent = gameObject.transform;
+		var iconObj = new GameObject("icon");
+		m_icon = iconObj.AddComponent<SpriteRenderer>();
+
+		iconObj.transform.SetParent(parent, false);
+		iconObj.transform.localPosition = Vector3.zero;
+
+
+		m_icon.sprite = (Sprite)Resources.Load("Images/forbidden", typeof(Sprite));
+
+
+		iconObj.SetActive(false);
+	}
+
+	public void SetForbbidden(bool isForbbiden)
+	{
+		m_icon.gameObject.SetActive(isForbbiden);
 	}
 }
 

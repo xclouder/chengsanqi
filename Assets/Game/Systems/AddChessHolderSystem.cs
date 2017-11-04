@@ -31,8 +31,10 @@ public class AddChessHolderSystem : ReactiveSystem<GameEntity> {
 			GameObject go = new GameObject("Chess Holder View");
 			go.transform.position = e.position.position;
 			go.transform.SetParent(_viewContainer, false);
-			e.AddView(go);
+			e.AddChessPieceHolderView(go);
 			go.Link(e, _context);
+
+			e.chessPieceHolderView.Init();
 		}
 	}
 

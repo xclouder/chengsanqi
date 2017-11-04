@@ -170,7 +170,13 @@ public class GameLogicSystem : ReactiveSystem<InputEntity> {
 					//walk to
 					if (chessHolder.hasLayChessPiece)
 					{
-						//TODO allow reselect
+						//select self > deselect
+						if (chessHolder.layChessPiece.chessPieceEntity == _gameContext.walkSelectedChessPiece.chessPieceEntity)
+						{
+							chessHolder.layChessPiece.chessPieceEntity.isChessPieceSelected = false;
+							_gameContext.RemoveWalkSelectedChessPiece();
+						}
+
 						return;
 					}
 					else

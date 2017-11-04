@@ -11,29 +11,31 @@ public static class GameComponentsLookup {
     public const int ActionState = 0;
     public const int ChessPiece = 1;
     public const int ChessPieceHolder = 2;
-    public const int ChessPieceSelected = 3;
-    public const int ComboChecker = 4;
-    public const int Coordinate = 5;
-    public const int DebugMessage = 6;
-    public const int Destroyed = 7;
-    public const int DropChessState = 8;
-    public const int ForbiddenLayout = 9;
-    public const int GameEndState = 10;
-    public const int GameState = 11;
-    public const int LayChessPiece = 12;
-    public const int Position = 13;
-    public const int PreviousActionChessPiece = 14;
-    public const int ResetGame = 15;
-    public const int TurnState = 16;
-    public const int View = 17;
-    public const int WalkSelectedChessPiece = 18;
+    public const int ChessPieceHolderView = 3;
+    public const int ChessPieceSelected = 4;
+    public const int ComboChecker = 5;
+    public const int Coordinate = 6;
+    public const int DebugMessage = 7;
+    public const int Destroyed = 8;
+    public const int DropChessState = 9;
+    public const int ForbiddenLayout = 10;
+    public const int GameEndState = 11;
+    public const int GameState = 12;
+    public const int LayChessPiece = 13;
+    public const int Position = 14;
+    public const int PreviousActionChessPiece = 15;
+    public const int ResetGame = 16;
+    public const int TurnState = 17;
+    public const int View = 18;
+    public const int WalkSelectedChessPiece = 19;
 
-    public const int TotalComponents = 19;
+    public const int TotalComponents = 20;
 
     public static readonly string[] componentNames = {
         "ActionState",
         "ChessPiece",
         "ChessPieceHolder",
+        "ChessPieceHolderView",
         "ChessPieceSelected",
         "ComboChecker",
         "Coordinate",
@@ -56,6 +58,7 @@ public static class GameComponentsLookup {
         typeof(ActionStateComponent),
         typeof(ChessPieceComponent),
         typeof(ChessPieceHolderComponent),
+        typeof(ChessPieceHolderViewComponent),
         typeof(ChessPieceSelectedComponent),
         typeof(ComboCheckerComponent),
         typeof(CoordinateComponent),

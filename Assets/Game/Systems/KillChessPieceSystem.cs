@@ -52,13 +52,13 @@ public class KillChessPieceSystem : ReactiveSystem<InputEntity> {
 					var piece = holder.layChessPiece.chessPieceEntity;
 					holder.RemoveLayChessPiece ();
 					holder.isForbiddenLayout = true;
+					holder.chessPieceHolderView.SetForbbidden(true);
 
 					var o = piece.view.gameObject;
 					o.Unlink ();
 					Object.Destroy (o);
 
 					piece.Destroy();
-
 
 					m_gameContext.ReplaceActionState(ActionState.End);
 
